@@ -1,4 +1,8 @@
-/*
+/* Modified version by runtime.js project authors
+ *  - removed static state and init_printf function
+ *  - added return values
+ *  - runtime.js platform-specific fixes
+ *
 File: printf.h
 
 Copyright (C) 2004  Kustaa Nyholm
@@ -87,19 +91,16 @@ For further details see source code.
 regs Kusti, 23.10.2004
 */
 
-#ifndef __TFP_PRINTF__
-#define __TFP_PRINTF__
+#pragma once
 
 #include <stdarg.h>
+#include <stdint.h>
+#include <stddef.h>
 
-void init_printf(void *putp, void (*putf) (void *, char));
+int tfp_sprintf(char *s, const char* fmt, ...);
+int tfp_vsprintf(char *s, const char *fmt, va_list va);
 
-void tfp_printf(char *fmt, ...);
-void tfp_sprintf(char *s, char *fmt, ...);
+int tfp_snprintf(char* s, size_t n, const char* fmt, ...);
+int tfp_vsnprintf(char* s, size_t n, const char* fmt, va_list va);
 
-void tfp_format(void *putp, void (*putf) (void *, char), char *fmt, va_list va);
-
-#define printf tfp_printf
-#define sprintf tfp_sprintf
-
-#endif
+int tfp_format(void *putp, void (*putf) (void *, char, size_t), const char *fmt, va_list va);
